@@ -1,3 +1,6 @@
+const sign = require('./user/sign')
+
 module.exports = {
-    test: async(parent, args,{ db }) => "hello!"
+    test: (parent, args,{ db }) => "hello",
+    login: (parent, args, { db,token }) => sign.in(parent, args, { db,token })
 }
