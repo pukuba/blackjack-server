@@ -1,4 +1,4 @@
-const auth = require('../auth/auth')
+const auth = require('../auth')
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const specialPW = "!@#$%^&*()_-=+~`./,;"

@@ -10,7 +10,7 @@
 - Mutation - logout : status code를 반환합니다.
 
 ## onetime
-- Mutation - onetime : status code를 반환합니다.
+- Mutation - onetime : status code, 현재 금액, 구매한 금액, 구매 일시, 아이디를 반환합니다.
 ``` js
 amount: Int!                    금액
 card_number: String!         카드번호 

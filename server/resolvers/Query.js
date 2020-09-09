@@ -1,6 +1,7 @@
 const sign = require('./user/sign')
+const payment = require('./payment')
 
 module.exports = {
-    test: (parent, args,{ db }) => "hello",
-    login: (parent, args, { db,token }) => sign.in(parent, args, { db,token })
+    login: (parent, args, { db,token }) => sign.in(parent, args, { db,token }),
+    order: (parent, args, { db,token }) => payment.find.order(parent, args, { db,token })
 }

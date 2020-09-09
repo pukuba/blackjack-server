@@ -1,4 +1,4 @@
-const auth = require("../auth/auth")
+const auth = require("../auth")
 const axios = require("axios")
 require('date-utils')
 
@@ -49,11 +49,18 @@ const logic = {
             db.collection('payment').insertOne({
                 id : user.id,
                 merchant_uid : process.env.UID + " " + time + " " + dbCnt,
-                data : time
+                date : time,
+                amount : args.input.amount
             })
             const userInfo = await db.collection('user').findOne({id:user.id})
             db.collection('user').updateOne({id:user.id},{$set:{'gold' : userInfo.gold + args.input.amount}})
-            return {code : 200}
+            return {
+                code : 200,
+                amount : args.input.amount,
+                id : user.id,
+                gold : userInfo.gold + args.input.amount,
+                date : time,
+            }
         }
         return {code : 400}
     }

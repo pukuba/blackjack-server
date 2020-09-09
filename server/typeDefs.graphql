@@ -1,8 +1,3 @@
-type Query{
-    test: String!
-    login(id:String!, pw:String!): User
-}
-
 type User{
     code: Int!
     id: String!
@@ -10,8 +5,17 @@ type User{
     token: String
 }
 
-type OneTimeStatus{
+type OneTimeResult{
+    id: String
     code: Int!
+    amount: Int
+    gold: Int
+    date: String
+}
+
+type OrderResult{
+    code: Int!
+    data: [OneTimeResult]
 }
 
 input OneTime{
@@ -24,8 +28,13 @@ input OneTime{
     buyer_email: String!
 }
 
+type Query{
+    login(id:String!, pw:String!): User
+    order: OrderResult
+}
+
 type Mutation{
     register(id:String!, pw:String!): User
     logout: User
-    onetime(input: OneTime!): OneTimeStatus
+    onetime(input: OneTime!): OneTimeResult
 }
