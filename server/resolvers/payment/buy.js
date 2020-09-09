@@ -46,13 +46,13 @@ const logic = {
         }
         const buyData = await axios(onetimeAPI)
         if(buyData.status === 200){
-            await db.collection('payment').insertOne({
+            db.collection('payment').insertOne({
                 id : user.id,
                 merchant_uid : process.env.UID + " " + time + " " + dbCnt,
                 data : time
             })
             const userInfo = await db.collection('user').findOne({id:user.id})
-            await db.collection('user').updateOne({id:user.id},{$set:{'gold' : userInfo.gold + args.input.amount}})
+            db.collection('user').updateOne({id:user.id},{$set:{'gold' : userInfo.gold + args.input.amount}})
             return {code : 200}
         }
         return {code : 400}

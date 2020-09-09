@@ -20,7 +20,7 @@ const user = {
         }
         if(await db.collection('user').findOne({id : args.id}) != null) return { code : 409 }
         const seed = Math.round((new Date().valueOf() * Math.random())) + ""
-        await db.collection('user').insertOne({
+        db.collection('user').insertOne({
             id : args.id,
             pw : crypto.createHash("sha512").update(args.pw + seed).digest("hex"),
             seed : seed,
