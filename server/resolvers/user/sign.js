@@ -1,14 +1,16 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const specialPW = "!@#$%^&*()_-=+~`./,;"
-const checkToken = (token) => {
+
+const checkToken = async(token, {db}) => {
     let ret = 0;
     try{
         ret = jwt.verify(token,process.env.JWT_SECRET)
     } catch { 
         return 401
     }
-    return ret
+    if(await db.collection('blackList').findOne({token : token}) == null) return ret
+    return 401
 }
 
 const specialChar = (x) => {
@@ -18,7 +20,7 @@ const specialChar = (x) => {
 
 const user = {
     async up(parent, args, {db, token}){
-        if(checkToken(token) != 401) return { code : 403 }
+        if(await checkToken(token,{ db }) != 401) return { code : 403 }
         if(args.id.length < 4 || args.pw.length < 6) return { code : 411 }
         for(let i=0; i<args.id.length; i++){
             if(!('a' <= args.id[i] && args.id[i] <= 'z' || 'A' <= args.id[i] && args.id[i] <= 'Z' || '0' <= args.id[i] && args.id[i] <= '9'))  return { code : 412}
@@ -38,7 +40,7 @@ const user = {
     },
 
     async in(parent, args, {db, token }){
-        if(checkToken(token) != 401) return { code : 403 }
+        if(await checkToken(token, { db }) != 401) return { code : 403 }
         const result = await db.collection('user').findOne({id:args.id})
         if(result == null) return { code : 401 }
         if(crypto.createHash("sha512").update(args.pw + result.seed).digest("hex") == result.pw){
@@ -51,6 +53,15 @@ const user = {
             }
         }
         return { code : 401 }
+    },
+
+    async out(parent, args, {db, token }){
+        if(await checkToken(token,{ db }) == 401) return { code : 403 }
+        await db.collection('blackList').insertOne({token : token})
+        return { 
+            code : 200,
+            token : ''
+        }
     }
 }
 

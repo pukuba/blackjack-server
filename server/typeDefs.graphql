@@ -12,4 +12,5 @@ type User{
 
 type Mutation{
     register(id:String!, pw:String!): User
+    logout: User
 }

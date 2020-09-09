@@ -29,7 +29,7 @@ const start = async() => {
         resolvers,
         engine:true,
         context: async({ req }) => {
-            const token = req ? req.headers.authorization: ''
+            const token = req ? req.headers.authorization : ''
             return {db, token}
         }
     })
