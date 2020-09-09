@@ -48,10 +48,8 @@ const user = {
     async out(parent, args, {db, token }){
         if(await auth.checkToken(token,{ db }) == 401) return { code : 403 }
         await db.collection('blackList').insertOne({token : token})
-        return { 
-            code : 200,
-            token : ''
-        }
+        return {code : 200}
+    
     }
 }
 

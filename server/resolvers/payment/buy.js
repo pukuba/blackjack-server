@@ -9,7 +9,7 @@ const iamport = {
 }
 
 const onetimePay = {
-    url : 'https://api.iamport.kr/subscribe/payments/onetime',
+    url : process.env.ONETIME_URL,
     method : 'post',
     headers:{
         'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ const onetimePay = {
 }
 
 const t0kenData = {
-    url : `https://api.iamport.kr/users/getToken`,
+    url : process.env.GET_TOKEN_URL,
     method:`post`,
     headers:{ "Content-Type": "application/json" },
     data: iamport
