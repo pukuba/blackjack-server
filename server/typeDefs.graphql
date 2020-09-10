@@ -13,6 +13,12 @@ type OneTimeResult{
     date: String
 }
 
+type Chat{
+    id: String
+    content: String
+    code: Int
+}
+
 type OrderResult{
     code: Int!
     data: [OneTimeResult]
@@ -37,4 +43,9 @@ type Mutation{
     register(id:String!, pw:String!): User
     logout: User
     onetime(input: OneTime!): OneTimeResult
+    chat(content: String!, room:Int!): Chat
+}
+
+type Subscription{
+    newChat(room:Int!): Chat
 }

@@ -1,7 +1,7 @@
-const buy = require('./buy')
-const find = require('./order')
+const Buy = require('./buy')
+const Find = require('./order')
 
 module.exports = {
-    buy,
-    find
+    Buy,
+    Find
 }
