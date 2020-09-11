@@ -38,11 +38,12 @@ const start = async() => {
     server.applyMiddleware({ app })
     
     app.get('/playground',expressPlayground({ endpoint: '/graphql'}))
+    app.use('/image/',express.static(path.join(__dirname,'models/card')))
 
     const httpServer = createServer(app)
 
     server.installSubscriptionHandlers(httpServer)
-    
+
     httpServer.timeout = 5000
 
     httpServer.listen({ port : 5252}, () => {
