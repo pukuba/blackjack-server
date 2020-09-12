@@ -1,5 +1,4 @@
 const auth = require('../auth')
-const jwt = require('jsonwebtoken');
 
 const logic = {
     async order(parent, args, { db, token }){
@@ -8,10 +7,7 @@ const logic = {
         return {
             code : 200,
             data : await db.collection('payment').find({'id' : user.id}).sort({'date' : -1}).toArray(),
-            token : jwt.sign({
-                id: user.id,
-                exp:Math.floor(Date.now() / 1000) + (60 * 60)
-            },process.env.JWT_SECRET)
+            token : auth.getToken(user.id)
         }
     }
 }

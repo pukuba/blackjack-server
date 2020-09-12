@@ -1,5 +1,4 @@
 const auth = require('../auth')
-const jwt = require('jsonwebtoken');
 
 const logic = {
     online: async(parent, args, { db,token }) => {
@@ -10,10 +9,7 @@ const logic = {
             code : 200,
             id : user.id,
             gold : data.gold,
-            token: jwt.sign({
-                id:args.id,
-                exp:Math.floor(Date.now() / 1000) + (60 * 60)
-            },process.env.JWT_SECRET)
+            token: auth.getToken(user.id)
         }
     }
 }

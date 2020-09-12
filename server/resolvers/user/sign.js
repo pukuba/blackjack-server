@@ -1,5 +1,4 @@
 const auth = require('../auth')
-const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const specialPW = "!@#$%^&*()_-=+~`./,;"
 
@@ -36,10 +35,7 @@ const user = {
         if(crypto.createHash("sha512").update(args.pw + result.seed).digest("hex") == result.pw){
             return {
                 code : 200,
-                token: jwt.sign({
-                    id:args.id,
-                    exp:Math.floor(Date.now() / 1000) + (60 * 60)
-                },process.env.JWT_SECRET)
+                token: auth.getToken(args.id)
             }
         }
         return { code : 401 }
