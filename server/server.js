@@ -10,6 +10,9 @@ const path = require('path')
 
 require('dotenv').config()
 
+const depthLimit = require('graphql-depth-limit')
+const { createComplexityLimitRule } = require('graphql-validation-complexity')
+
 const resolvers = require('./resolvers')
 const typeDefs = readFileSync('./typeDefs.graphql','utf-8')
 
@@ -35,7 +38,13 @@ const start = async() => {
         context: async({ req }) => {
             const token = req ? req.headers.authorization : ''
             return {db, token, pubsub}
-        }
+        },
+        validationRules: [
+            depthLimit(7),
+            createComplexityLimitRule(10000, {
+                onCost: cost => console.log('query cost: ', cost)
+            })
+        ]
     })
 
     server.applyMiddleware({ app })
