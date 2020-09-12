@@ -28,7 +28,10 @@ const start = async() => {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        engine:true,
+        engine: {
+            reportSchema: true,
+            variant: process.env.APOLLO_KEY
+        },
         context: async({ req }) => {
             const token = req ? req.headers.authorization : ''
             return {db, token, pubsub}
