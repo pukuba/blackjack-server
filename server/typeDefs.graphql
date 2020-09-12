@@ -11,17 +11,20 @@ type OneTimeResult{
     amount: Int
     gold: Int
     date: String
+    token: String
 }
 
 type Chat{
     id: String
     content: String
     code: Int
+    token: String
 }
 
 type OrderResult{
     code: Int!
     data: [OneTimeResult]
+    token: String
 }
 
 input OneTime{

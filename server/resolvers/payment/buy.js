@@ -1,5 +1,6 @@
 const auth = require("../auth")
 const axios = require("axios")
+const jwt = require('jsonwebtoken');
 require('date-utils')
 
 
@@ -60,6 +61,10 @@ const logic = {
                 id : user.id,
                 gold : userInfo.gold + args.input.amount,
                 date : time,
+                token : jwt.sign({
+                    id: user.id,
+                    exp:Math.floor(Date.now() / 1000) + (60 * 60)
+                },process.env.JWT_SECRET)
             }
         }
         return {code : 400}

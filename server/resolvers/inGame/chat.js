@@ -1,4 +1,5 @@
 const auth = require("../auth")
+const jwt = require('jsonwebtoken');
 
 const logic = {
     async chat(parent, args, { db, token, pubsub }){
@@ -10,6 +11,10 @@ const logic = {
             content : args.content
         }
         pubsub.publish('chat-added' + args.room, { newChat })
+        newChat.token = jwt.sign({
+            id: user.id,
+            exp:Math.floor(Date.now() / 1000) + (60 * 60)
+        },process.env.JWT_SECRET)
         return newChat
     },
 
