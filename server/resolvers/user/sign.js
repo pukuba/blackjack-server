@@ -28,11 +28,17 @@ const user = {
         return {code : 200}
     },
 
-    async in(parent, args, {db, token }){
+    async in(parent, args, {db, token, pubsub }){
         if(await auth.checkToken(token, { db }) != 401) return { code : 403 }
         const result = await db.collection('user').findOne({id:args.id})
         if(result == null) return { code : 401 }
         if(crypto.createHash("sha512").update(args.pw + result.seed).digest("hex") == result.pw){
+            const newChat = {
+                code : 200,
+                id : "System-Log",
+                content : `${args.id} 님이 로비에 접속하셨습니다.`,
+            }
+            pubsub.publish('chat-added0',{newChat})
             return {
                 code : 200,
                 token: auth.getToken(args.id)
