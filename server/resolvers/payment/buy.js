@@ -63,7 +63,7 @@ const logic = {
                 token : auth.getToken(user.id)
             }
         }
-        return {code : 400}
+        return {code : 412}
     }
 }
 

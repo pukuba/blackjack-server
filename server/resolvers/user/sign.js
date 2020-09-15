@@ -9,7 +9,7 @@ const specialChar = (x) => {
 
 const user = {
     async up(parent, args, {db, token}){
-        if(await auth.checkToken(token,{ db }) != 401) return { code : 403 }
+        if(await auth.checkToken(token,{ db }) != 401) return { code : 401 }
         if(args.id.length < 4 || args.pw.length < 6) return { code : 411 }
         for(let i=0; i<args.id.length; i++){
             if(!('a' <= args.id[i] && args.id[i] <= 'z' || 'A' <= args.id[i] && args.id[i] <= 'Z' || '0' <= args.id[i] && args.id[i] <= '9'))  return { code : 412}
@@ -29,9 +29,9 @@ const user = {
     },
 
     async in(parent, args, {db, token, pubsub }){
-        if(await auth.checkToken(token, { db }) != 401) return { code : 403 }
+        if(await auth.checkToken(token, { db }) != 401) return { code : 401 }
         const result = await db.collection('user').findOne({id:args.id})
-        if(result == null) return { code : 401 }
+        if(result == null) return { code : 404 }
         if(crypto.createHash("sha512").update(args.pw + result.seed).digest("hex") == result.pw){
             const newChat = {
                 code : 200,
@@ -44,11 +44,11 @@ const user = {
                 token: auth.getToken(args.id)
             }
         }
-        return { code : 401 }
+        return { code : 400 }
     },
 
     async out(parent, args, {db, token }){
-        if(await auth.checkToken(token,{ db }) == 401) return { code : 403 }
+        if(await auth.checkToken(token,{ db }) == 401) return { code : 401 }
         await db.collection('blackList').insertOne({token : token})
         return {code : 200}
     
