@@ -24,6 +24,8 @@ const user = {
             pw : crypto.createHash("sha512").update(args.pw + seed).digest("hex"),
             seed : seed,
             gold : 0,
+            status: -1,
+            host:0
         })
         return {code : 200}
     },
@@ -33,6 +35,7 @@ const user = {
         const result = await db.collection('user').findOne({id:args.id})
         if(result == null) return { code : 404 }
         if(crypto.createHash("sha512").update(args.pw + result.seed).digest("hex") == result.pw){
+            db.collection('user').updateOne({'id':args.id},{$set:{'status':0,'host':0}})
             const newChat = {
                 code : 200,
                 id : "System-Log",
@@ -41,17 +44,20 @@ const user = {
             pubsub.publish('chat-added0',{newChat})
             return {
                 code : 200,
-                token: auth.getToken(args.id)
+                token: auth.getToken(args.id),
+                status:0,
+                host:0
             }
         }
         return { code : 400 }
     },
 
     async out(parent, args, {db, token }){
-        if(await auth.checkToken(token,{ db }) == 401) return { code : 401 }
+        const user = await auth.checkToken(token,{ db })
+        if(user == 401) return { code : 401 }
         await db.collection('blackList').insertOne({token : token})
+        db.collection('user').updateOne({'id':user.id},{$set:{'status':-1,'host':0}})
         return {code : 200}
-    
     }
 }
 

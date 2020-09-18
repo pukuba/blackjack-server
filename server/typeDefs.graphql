@@ -3,6 +3,8 @@ type User{
     id: String
     gold: Int
     token: String
+    status: String
+    host: Int
 }
 
 type OneTimeResult{
@@ -26,6 +28,14 @@ type OrderResult{
     token: String
 }
 
+type RoomStatus{
+    code: Int!
+    host: String!
+    player: Int
+    roomId: Int 
+    token: String
+}
+
 input OneTime{
     amount: Int!
     card_number: String!
@@ -40,6 +50,7 @@ type Query{
     login(id:String!, pw:String!): User
     order: OrderResult
     online: User
+    refresh: [RoomStatus]
 }
 
 type Mutation{
@@ -47,8 +58,11 @@ type Mutation{
     logout: User
     onetime(input: OneTime!): OneTimeResult
     chat(content: String!, room:Int!): Chat
+    create: RoomStatus
 }
+
 
 type Subscription{
     newChat(room:Int!): Chat
+    newRoom: RoomStatus
 }
