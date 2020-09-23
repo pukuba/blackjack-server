@@ -60,7 +60,7 @@ const logic = {
                 id : user.id,
                 gold : userInfo.gold + args.input.amount,
                 date : time,
-                token : auth.getToken(user.id)
+                token : auth.getToken(user.id,user.status,user.host)
             }
         }
         return {code : 412}

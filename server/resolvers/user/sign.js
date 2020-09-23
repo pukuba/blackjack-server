@@ -44,7 +44,7 @@ const user = {
             pubsub.publish('chat-added0',{newChat})
             return {
                 code : 200,
-                token: auth.getToken(args.id),
+                token: auth.getToken(args.id,0,0),
                 status:0,
                 host:0
             }

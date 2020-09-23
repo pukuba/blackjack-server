@@ -9,7 +9,7 @@ const logic = {
             code : 200,
             id : user.id,
             gold : data.gold,
-            token: auth.getToken(user.id),
+            token: auth.getToken(user.id,user.status,user.host),
             status : data.status,
             host : data.host
         }

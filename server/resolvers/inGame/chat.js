@@ -10,7 +10,7 @@ const logic = {
             content : args.content
         }
         pubsub.publish('chat-added' + args.room, { newChat })
-        newChat.token = auth.getToken(user.id)
+        newChat.token = auth.getToken(user.id,user.status,user.host)
         return newChat
     },
 

@@ -3,7 +3,7 @@ type User{
     id: String
     gold: Int
     token: String
-    status: String
+    status: Int
     host: Int
 }
 
@@ -30,7 +30,7 @@ type OrderResult{
 
 type RoomStatus{
     code: Int!
-    host: String!
+    host: String
     player: Int
     roomId: Int 
     token: String

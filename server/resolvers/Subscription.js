@@ -6,10 +6,11 @@ module.exports = {
             return inGame.Chat.newChat(parent, args, { pubsub })
         }
     },
-
+    /*
     newRoom : {
         subscribe: (parent, args, { pubusb }) => {
             return inGame.Room.create(parent, args, {db, token, pubsub})
         }
     }
+    */
 }

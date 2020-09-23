@@ -7,7 +7,7 @@ const logic = {
         return {
             code : 200,
             data : await db.collection('payment').find({'id' : user.id}).sort({'date' : -1}).toArray(),
-            token : auth.getToken(user.id)
+            token : auth.getToken(user.id,user.status,user.host)
         }
     }
 }

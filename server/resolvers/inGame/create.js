@@ -4,18 +4,17 @@ const logic = {
     async create(parent, args, {db, token, pubsub }){
         const user = await auth.checkToken(token, { db })
         if(user == 401) return {code : 401}
-        if(user.status  != 0) return {code : 403}
-        const roomId = await db.collection('user').find().sort({"status":-1}).limit(1).toArray() 
-        roomId++
-        db.collection('user').updateOne({'id':user.id},{$set:{'status':roomId,host:1}})
-        const newRoom = {
+        if(user.status != 0) return {code : 403}
+        console.log(user)
+        let roomId = await db.collection('user').findOne({$query: {}, $orderby: {'status': -1}})
+        db.collection('user').updateOne({'id':user.id},{$set:{'status':roomId.status+1,host:1}})
+        let newRoom = {
             host : user.id,
             code : 200,
             player : 1,
-            roomId : roomId
+            roomId : roomId.status+1
         }
-        pubsub.publish('lobby',{ newRoom })
-        newRoom.token = auth.getToken
+        newRoom.token = auth.getToken(user.id, roomId.status+1, 1)
         return newRoom
     }
 }
