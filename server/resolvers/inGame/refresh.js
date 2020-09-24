@@ -7,9 +7,9 @@ const logic = {
         if(user.status != 0) return [{ code : 403 }]
         const data = await db.collection('user').find({status:{$gt:0}}).sort({'status':-1}).toArray()
         let rooms = new Map(), hosts = new Map(), res = []
-        for(let i=0; i<data.length; i++){
-            rooms.set(data[i].status, rooms[data[i].status] ? rooms[data[i].status] + 1 : 1) 
-            if(data[i].host) hosts[data[i].status] = data[i].id
+        for(const i of data){
+            rooms.set(i.status, rooms[i.status] ? rooms[i.status] + 1 : 1) 
+            if(i.host) hosts[i.status] = i.id
         }
         for(let [key, value] of rooms){
             res.push({
