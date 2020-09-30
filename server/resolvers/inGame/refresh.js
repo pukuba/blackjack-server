@@ -17,11 +17,17 @@ const logic = {
                 host : hosts[key],
                 player : value,
                 roomId : key,
-                token : auth.getToken(user.id,user.status,user.host)
+                token : auth.getToken(user.id,user.status,user.host,user.play)
             })
         }
         return res
-    } 
+    } ,
+
+    newUser(parent, args, { pubsub }){
+        return pubsub.asyncIterator('new-user' + args.room)
+    }
 }
+
+
 
 module.exports = logic

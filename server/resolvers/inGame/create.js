@@ -14,7 +14,7 @@ const logic = {
             player : 1,
             roomId : roomId.status+1
         }
-        newRoom.token = auth.getToken(user.id, roomId.status+1, 1)
+        newRoom.token = auth.getToken(user.id, roomId.status+1, 1,0)
         return newRoom
     }
 }

@@ -12,12 +12,13 @@ module.exports = {
         return 401
     },
     
-    getToken: (id,status,host) => {
+    getToken: (id,status,host,play) => {
         return jwt.sign({
             id: id,
             status : status,
             host : host,
-            exp:Math.floor(Date.now() / 1000) + (60 * 60)
+            play : play,
+            exp:Math.floor(Date.now() / 1000) + (60 * 60),
         },process.env.JWT_SECRET)
     }
 }

@@ -1,6 +1,6 @@
-const auth = require("../auth")
+const auth = require('../auth')
 
-const logic = {
+const user = {
     async chat(parent, args, { db, token, pubsub }){
         const user = await auth.checkToken(token,{db})
         if(user === 401) return { code : 401 }
@@ -10,13 +10,9 @@ const logic = {
             content : args.content
         }
         pubsub.publish('chat-added' + args.room, { newChat })
-        newChat.token = auth.getToken(user.id,user.status,user.host)
+        newChat.token = auth.getToken(user.id,user.status,user.host,user.play)
         return newChat
-    },
-
-    newChat(parent, args, { pubsub }){
-        return pubsub.asyncIterator('chat-added' + args.room)
     }
 }
 
-module.exports = logic
+module.exports = user
