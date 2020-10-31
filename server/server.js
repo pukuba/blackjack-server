@@ -35,11 +35,29 @@ const start = async() => {
             reportSchema: true,
             variant: process.env.APOLLO_KEY
         },
-        context: async({ req }) => {
-            const token = req ? req.headers.authorization : ''
-            return {db, token, pubsub }
+        subscriptions:{
+            onConnect: (req, websocket) =>{
+                if(req){
+                    console.log(req.Authorization)
+                    return {token : req.Authorization}
+                }
+                throw new Error ("Missing token!")
+            },
+
+            onDisconnect: async(webSocket,context) => {
+                const promiseToken = await context.initPromise
+                const token = promiseToken.token
+                console.log(token)
+                throw new Error ("Subscription Disconnect")
+            }
+
         },
-        validationRules: [
+        context: async({ req,connection }) => {
+            const token = req ? req.headers.authorization : ''
+            const subToken =  connection ? connection.context.token : ''
+            return {db, token, subToken, pubsub }
+        },
+        validationRules: [  
             depthLimit(7),
             createComplexityLimitRule(10000, {
                 onCost: cost => console.log('query cost : ',cost)
