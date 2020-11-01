@@ -4,7 +4,7 @@ module.exports = {
             token : token,
             subToken : subToken
         }
-        pubsub.publish('chat-added',args, { newChat })
+        pubsub.publish('chat-added', { newChat })
         return args.content
     }
 }
