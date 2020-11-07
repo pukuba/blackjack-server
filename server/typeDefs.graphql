@@ -1,15 +1,21 @@
-type Query{
+type Query {
     test: String
+    login(id: String!, pw: String): Token
 }
 
-type Mutation{
-    chat(content:String): String
+type Mutation {
+    chat(content: String): String
+    register(name: String!, id: String!, pw: String!): User
 }
 
-type TT{
+type User {
+    name: String
+    id: String
+    pw: String
+    money: Int
+}
+
+type Token {
     token: String
-    subToken: String
-}
-type Subscription{
-    newChat: TT
+    refreshToken: String
 }
