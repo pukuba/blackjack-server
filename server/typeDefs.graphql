@@ -6,12 +6,12 @@ type Query {
 type Mutation {
     chat(content: String): String
     register(name: String!, id: String!, pw: String!): User
+    logout(refreshToken: String): Boolean
 }
 
 type User {
     name: String
     id: String
-    pw: String
     money: Int
 }
 

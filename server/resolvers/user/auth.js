@@ -3,14 +3,12 @@ const jwt = require('jsonwebtoken')
 
 
 module.exports = {
-    checkToken: async (parent, args, { token, db }) => {
-        let returnToken
+    checkToken: async (token, db) => {
         try {
-            returnToken = jwt.verify(token, process.env.JWT_PW)
+            return jwt.verify(token, process.env.JWT_PW)
         } catch {
             throw ApolloError("token is not valid", 401)
         }
-        return returnToken
     },
 
     getToken: (name, db) => {
@@ -49,7 +47,11 @@ module.exports = {
             token: jwt.sign({
                 name: foundToken.name,
                 exp: Math.floor(Date.now() / 1000) + (60 * 60)
-            },process.env.JWT_PW)
+            }, process.env.JWT_PW)
         }
+    },
+
+    deleteToken: (refreshToken, db) => {
+        db.collection('token').deleteOne({ refreshToken })
     }
 }

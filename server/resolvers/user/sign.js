@@ -1,5 +1,5 @@
 const { ApolloError } = require('apollo-server-express')
-const { getToken } = require('./auth')
+const { getToken, deleteToken } = require('./auth')
 
 const cryptoRandomString = require('crypto-random-string');
 const crypto = require('crypto');
@@ -53,8 +53,8 @@ module.exports = {
 
         const salt = cryptoRandomString({ length: 15, type: 'numeric' })
         const user = {
-            name: name,
-            id: id,
+            name,
+            id,
             pw: hashWithSalt(pw, salt),
             salt,
             money: 10000
@@ -69,6 +69,11 @@ module.exports = {
         if (user === null || user.pw !== hashWithSalt(pw, user.salt)) {
             throw new ApolloError("id & pw check", 401)
         }
-        return getToken(user.name,db)
+        return getToken(user.name, db)
+    },
+
+    logout: async (parent, { refreshToken }, { db }) => {
+        deleteToken(refreshToken, db)
+        return true
     }
 }
