@@ -1,4 +1,6 @@
 const { ApolloError } = require('apollo-server-express')
+const { getToken } = require('./auth')
+
 const cryptoRandomString = require('crypto-random-string');
 const crypto = require('crypto');
 const specialChar = "~!@#$%^&*()_+-=`₩[]{},.|;:></?"
@@ -25,7 +27,7 @@ const isValidPassword = x => {
     return true
 }
 
-const hashWithSalt = (pw, seed) => crypto.createHash("sha512").update(pw + seed).digest("hex");
+const hashWithSalt = (pw, salt) => crypto.createHash("sha512").update(pw + salt).digest("hex");
 
 
 module.exports = {
@@ -44,12 +46,12 @@ module.exports = {
         }
 
         const foundUser = await db.collection('user').findOne({ $or: [{ "name": name }, { "id": id }] })
-        
+
         if (foundUser) {
             throw new ApolloError("Conflict", 409)
         }
 
-        const salt = cryptoRandomString({length:15, type: 'numeric'})
+        const salt = cryptoRandomString({ length: 15, type: 'numeric' })
         const user = {
             name: name,
             id: id,
@@ -62,12 +64,11 @@ module.exports = {
         return user
     },
 
-    login: async(parent, {id, pw}, { db, token }) => {
-        const user = await db.collection('user').findOne({'id':id,'pw':pw})
-        console.log(user)
-        return {
-            token:"asdf",
-            refreshToken:"fds"
+    login: async (parent, { id, pw }, { db, token }) => {
+        const user = await db.collection('user').findOne({ 'id': id })
+        if (user === null || user.pw !== hashWithSalt(pw, user.salt)) {
+            throw new ApolloError("id & pw check", 401)
         }
+        return getToken(user.name,db)
     }
 }

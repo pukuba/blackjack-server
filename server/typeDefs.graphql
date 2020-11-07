@@ -1,6 +1,6 @@
 type Query {
-    test: String
-    login(id: String!, pw: String): Token
+    login(id: String!, pw: String): Login
+    refreshLogin(refreshToken: String): Refresh
 }
 
 type Mutation {
@@ -15,7 +15,11 @@ type User {
     money: Int
 }
 
-type Token {
+type Login {
     token: String
     refreshToken: String
+}
+ 
+type Refresh {
+    token: String
 }

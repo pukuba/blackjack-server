@@ -19,7 +19,7 @@ const start = async () => {
     const app = express()
     const pubsub = new PubSub()
     const client = await MongoClient.connect(
-        process.env.DB_HOST, {
+        process.env.DB_HOST2, {
         useUnifiedTopology: true,
         useNewUrlParser: true
     }
