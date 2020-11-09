@@ -14,6 +14,7 @@ const { createComplexityLimitRule } = require('graphql-validation-complexity')
 
 const resolvers = require('./resolvers')
 const typeDefs = readFileSync('./typeDefs.graphql', 'utf-8')
+const cors = require('cors')
 
 const start = async () => {
     const app = express()
@@ -24,6 +25,10 @@ const start = async () => {
         useNewUrlParser: true
     }
     )
+    const corsOptions = {
+        origin: '*',
+        optionsSuccessStatus: 200,
+    }
 
     const db = client.db()
 
@@ -67,6 +72,7 @@ const start = async () => {
 
     app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
     app.use('/image/', express.static(path.join(__dirname, 'models/card')))
+    app.use(cors(corsOptions))
 
     const httpServer = createServer(app)
 
