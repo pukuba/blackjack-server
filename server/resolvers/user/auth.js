@@ -1,13 +1,14 @@
-const { ApolloError, PubSub } = require('apollo-server-express')
+const { ApolloError } = require('apollo-server-express')
+
 const jwt = require('jsonwebtoken')
 
 
 module.exports = {
-    checkToken: async (token, db) => {
+    checkToken: (token) => {
         try {
             return jwt.verify(token, process.env.JWT_PW)
         } catch {
-            throw ApolloError("token is not valid", 401)
+            throw new ApolloError("token is not valid", 401)
         }
     },
 
