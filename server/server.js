@@ -51,7 +51,7 @@ const start = async () => {
                 //해당 상황이 끝났을때의 유저상태를 db에서 조회함
                 const promiseToken = await context.initPromise
                 const token = promiseToken.token
-                throw new Error("Subscription Disconnect")
+                console.log(token + "end connect")
             }
 
         },
