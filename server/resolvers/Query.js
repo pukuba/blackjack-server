@@ -1,6 +1,7 @@
-const { login, refreshLogin } = require('./user')
+const { login, refreshLogin, findUser } = require('./user')
 
 module.exports = {
-    login: (parent, args, { db }) => login(parent, args, { db }),
-    refreshLogin: (parent, { refreshToken }, { db }) => refreshLogin(parent, { refreshToken }, { db })
+    login,
+    refreshLogin,
+    findUser,
 }

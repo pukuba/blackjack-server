@@ -75,5 +75,9 @@ module.exports = {
     logout: async (parent, { refreshToken }, { db }) => {
         deleteToken(refreshToken, db)
         return true
+    },
+
+    findUser: async (parent, { name }, { db }) => {
+        return await db.collection('user').findOne({name:name})
     }
 }

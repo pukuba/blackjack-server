@@ -1,6 +1,7 @@
 type Query {
     login(id: String!, pw: String): Login
     refreshLogin(refreshToken: String): Refresh
+    findUser(name: String!): User
 }
 
 type Mutation {
