@@ -5,6 +5,7 @@ const expressPlayground = require('graphql-playground-middleware-express').defau
 const { MongoClient } = require('mongodb')
 const { readFileSync } = require('fs')
 const { createServer } = require('http')
+
 const path = require('path')
 
 require('dotenv').config()
@@ -18,6 +19,7 @@ const cors = require('cors')
 
 const start = async () => {
     const app = express()
+    module.exports = app
     const pubsub = new PubSub()
     const client = await MongoClient.connect(
         process.env.DB_HOST2, {
@@ -67,7 +69,7 @@ const start = async () => {
             })
         ]
     })
-
+    
     server.applyMiddleware({ app })
 
     app.get('/playground', expressPlayground({ endpoint: '/graphql' }))
@@ -75,15 +77,14 @@ const start = async () => {
     app.use(cors(corsOptions))
 
     const httpServer = createServer(app)
-
     server.installSubscriptionHandlers(httpServer)
-
+    
     httpServer.timeout = 5000
-
     httpServer.listen({ port: process.env.PORT }, () => {
         console.log(`GraphQL Server running at http://localhost:${process.env.PORT}${server.graphqlPath}`)
         console.log(`Subscriptions ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`)
     })
+    
 }
 
 start()
