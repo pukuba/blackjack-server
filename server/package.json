@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "nodemon -e js,json,graphql",
-    "test": "node_modules/.bin/mocha test/test.epec.js"
+    "test": "node_modules/.bin/mocha test/test.spec.js"
   },
   "author": "",
   "license": "ISC"
