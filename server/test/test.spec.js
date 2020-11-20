@@ -88,9 +88,9 @@ describe('TEST', () => {
         const res = await req.post('/graphql')
             .send({ query })
             .expect(200)
-        
+
         const json = JSON.parse(res.res.text)
         assert.strictEqual(json.errors[0].extensions.code, 401)
     })
-    
+
 })

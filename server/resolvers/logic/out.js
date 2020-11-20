@@ -10,8 +10,9 @@ module.exports = {
         pubsub.publish('chat-added', { newChat })
         return newChat
     },
-
-    newChat: (parent, args, { pubsub }) => {
-        return pubsub.asyncIterator('chat-added')
+    newChat: {
+        subscribe: (parent, args, { pubsub, subToken }) => {
+            return pubsub.asyncIterator('chat-added')
+        }
     }
 }

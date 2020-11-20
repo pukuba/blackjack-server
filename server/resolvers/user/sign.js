@@ -59,7 +59,12 @@ module.exports = {
             salt,
             money: 10000
         }
-
+        const status = {
+            name,
+            channel: -1,
+            status: 0,     // inGame 1, playing Game 2                            
+        }
+        await db.collection('status').insertOne(status)
         await db.collection('user').insertOne(user)
         return user
     },
@@ -78,6 +83,6 @@ module.exports = {
     },
 
     findUser: async (parent, { name }, { db }) => {
-        return await db.collection('user').findOne({name:name})
+        return await db.collection('user').findOne({ name: name })
     }
 }
